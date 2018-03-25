@@ -84,7 +84,8 @@
                                     </thead>
                                     <tbody>
                                     @if($productId )
-                                        @if($productId->contacts)
+                                        @if(!empty($productId->contacts[0]['name']))
+                                            {{'empty'}}
                                             @php
                                                 $i = 0
                                             @endphp
@@ -94,18 +95,18 @@
 
                                             <tr id="row{{$i}}">
                                                 <td>
-                                                    <input type="text" name="contacts[][name]" value='{{$key->name}}' placeholder='Enter Name' class="form-control required"/>
+                                                    <input type="text" name="contacts[{{$i}}][name]" value='{{$key->name}}' placeholder='Enter Name' class="form-control required"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="contacts[][phone]" value='{{$key->phone}}' placeholder='Enter Phone' class="form-control required"/>
+                                                    <input type="text" name="contacts[{{$i}}][phone]" value='{{$key->phone}}' placeholder='Enter Phone' class="form-control required"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="contacts[][phone2]" value='{{$key->phone2}}' placeholder='Enter Other Phone' class="form-control"/>
+                                                    <input type="text" name="contacts[{{$i}}][phone2]" value='{{$key->phone2}}' placeholder='Enter Other Phone' class="form-control"/>
                                                 </td>
 
                                                 <td>
                                                     <div class="input-group">
-                                                        <input type="email" name="contacts[][email]" value='{{$key->email}}'  placeholder='Enter Option Value' class="form-control" />
+                                                        <input type="email" name="contacts[{{$i}}][email]" value='{{$key->email}}'  placeholder='Enter Option Value' class="form-control" />
                                                         <span class="input-group-btn">
                                                                 @if ($loop->last)
                                                                 <button id="btn{{$i}}" type="button" class="btn btn-primary" onclick="addRow(this)">
@@ -128,6 +129,29 @@
                                                 $i++
                                             @endphp
                                         @endforeach
+                                            @else
+                                            <tr id="row0">
+                                                <td>
+                                                    <input type="text" name="contacts[0][name]" placeholder='Enter Name' class="form-control required"/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="contacts[0][phone]" placeholder='Enter Phone' class="form-control required"/>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="contacts[0][phone2]"  placeholder='Enter Other Phone' class="form-control"/>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="email" name='contacts[0][email]'  placeholder='Enter Option Value' class="form-control" />
+                                                        <span class="input-group-btn">
+                                                     <button id="btn0" type="button" class="btn btn-primary" onclick="addRow(this)">
+                                                          <span id="icon0" class="glyphicon glyphicon-plus"></span>
+                                                     </button>
+                                                </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
 
 @endif
                                      @else
@@ -167,8 +191,12 @@
                 </div>
             </div>
         </div>
+    <link rel="stylesheet" href="css/dataTables/bootstrap.table-editor.css">
+
+    <script src="js/dataTables/bootstrap.table-editor.js"></script>
 
     <script>
+
 
         function addRow(input) {
             var table = document.getElementById("myTable");

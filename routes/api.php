@@ -28,5 +28,11 @@ Route::post('/subcategory', 'Products\SubCategoryController@apiCreate');
 Route::post('/brand', 'Products\BrandController@apiCreate');
 Route::get('/suppliers','Suppliers\SupplierController@listapi');
 Route::post('/supplier', 'Suppliers\SupplierController@apiCreate');
+Route::post('/suppliers/{id}/products','Suppliers\SupplierController@apisyncProducts');
+Route::post('/suppliers/products','Suppliers\SupplierController@apiListProducts');
+
+Route::get('/test', function () {
+    return view('partials.actionButton', ['name' => 'James']);
+});
 //Route::get('/product/{id}', 'Products\ProductController@apiShow');
 

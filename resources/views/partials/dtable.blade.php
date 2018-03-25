@@ -34,6 +34,7 @@
             var columns = [];
 
             var url = '/api/'+table;
+
             $.get({url:url,dataType: 'json',   success:function(json, status){
                    // alert(JSON.stringify(json));
                     data = json.data;
@@ -55,7 +56,18 @@ columnDefs:[{
     },target:"updated_at"
 },            {"targets":-1, "data":"index", "render": function(data,type,row,full,meta)
     {
-        return    @component('partials.actionButton') @endcomponent
+        var x =    @component('partials.actionButton') @endcomponent
+    var y =    @component('partials.actionButton')@slot('suppliers')test @endslot @endcomponent
+if(table == 'suppliers')
+    {
+        return y;
+    }
+        return x;
+
+
+
+
+
     }}
 ]
 
@@ -154,6 +166,7 @@ columnDefs:[{
     });
 
     function refreshDatatable(table) {
+
        // var table = this.id;
        // var data = [];
         var columns = [];
@@ -177,6 +190,12 @@ columnDefs:[{
             }});
 //alert(JSON.stringify(data));
       //  return [data,columns];
+
+        console.log(
+            JSON.stringify( $('#'+table).DataTable().rows().data().toArray() )
+        );
+       // console.log($('#'+table).DataTable().serialize());
+
 
     }
 

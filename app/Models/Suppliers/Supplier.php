@@ -23,4 +23,9 @@ class Supplier extends Model
         return  $this->hasMany('App\Models\Suppliers\SupplierContact', 'supplier_id');
     }
 
+    public function products()
+    {
+        return $this->belongsToMany('App\Models\Products\Product')->withTimestamps()->withPivot('created_by', 'updated_by','deleted_by');
+    }
+
 }

@@ -13,13 +13,16 @@
         </div>
     @endif
 
+
 {{--    <div class="row">
         <div class="col-md-12">
             <div class="ibox float-e-margins ">
                 <div class="ibox-content">
                     <div class="bs-example">--}}
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" data-show="supplier" data-edit="supplier" data-create="supplier" data-delete="suppliers" href="#supplier"><h4>Supplier</h4></a></li>
+                        <ul id="tabs" class="nav nav-tabs">
+                            <li id="suppliers_tab" class="active"><a data-toggle="tab" data-show="supplier" data-edit="supplier" data-create="supplier" data-delete="suppliers" href="#supplier"><h4>Supplier</h4></a></li>
+                            <li id="sproducts_tab"><a data-toggle="tab" data-show="category" data-edit="category" data-create="category" data-delete="categories" href="#sproducts"><h4 id="tab2">Supplier products</h4></a></li>
+
                         </ul>
 
 
@@ -39,10 +42,10 @@
 
                     @endcomponent
                     @component('partials.deleteModal')
-                        categories
+                        products
                     @endcomponent
                     <div class="tab-content">
-                        <div id="product" class="tab-pane fade in active">
+                        <div id="supplier" class="tab-pane fade in active">
 
                             {{--                    @if (session('status'))
                             <div class="alert alert-success">
@@ -54,6 +57,13 @@
                             @component('partials.indexTable')
                                 suppliers
                             @endcomponent
+                        </div>
+
+                        <div id="sproducts" data-id="0" class="tab-pane fade">
+                            @component('suppliers.sproducts',['category_id'=>$category_id,'sproducts'=>$sproducts])
+                                sasa
+                            @endcomponent
+
                         </div>
                     </div>
 
@@ -70,5 +80,53 @@
 @section('scripts')
     @parent
     @include('partials.javascripts')
+
+
     @include('partials.dtable')
+    <script>
+        function activaTab(tab){
+            $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+        }
+        $(document).on('click', '.list-products', function() {
+            $('#suppliers_tab').hide();
+
+            $('#tab2').text($(this).data('title'));
+            var id =$(this).data('id');
+            $('#supplier_id').val(id);
+            $('#sproducts_tab').show();
+
+            activaTab('sproducts');
+            var data=[];
+            $.post('/api/suppliers/products',
+                {
+
+                    id: id
+                },
+                function(data, status){
+
+                    data.forEach(function(prod) {
+                        //console.log(JSON.stringify(prod));
+                        var brnd = (prod.brand == null ? null : prod.brand["brand"])
+                        //console.log(prod.name);
+
+                            sptable.row.add([
+                                prod.id,
+                                prod.name,
+                                prod.sub_category['category']['name'],
+                                prod.sub_category['name'],
+                                brnd,
+                                prod.model,
+                                '<button type="button" name="delete" class="btn btn-danger btn-xs delete" id="'+prod.id+ '">Delete</button>'
+
+                            ]);
+
+                    });
+                    sptable.draw(  );
+                });
+
+
+
+        });
+    </script>
 @endsection
+

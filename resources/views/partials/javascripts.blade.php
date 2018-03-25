@@ -28,6 +28,12 @@
 <link href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap.min.css"/>
 
 {{--<script src="/js/dataTables/ColReorderWithResize.js"></script>--}}
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.0-beta/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.0-beta/css/bootstrap-select.min.css">
+
 <style>
 
 </style>
@@ -58,6 +64,7 @@
 
 <script>
     window._token = '{{ csrf_token() }}';
+    var actionbutton;
 
 </script>
 
@@ -147,20 +154,7 @@
      //  alert($(e.target).data('test')+'Button activated' );
    }}
         ],
-        columnDefs: [/*{
 
-            "render": function (data, type, row, meta, full) {
-                return '<span data-toggle="tooltip" title="' + row.attributes.name + '">' + data + '</span>';
-            },
-            "targets": [3]
-        },*/
-            {"targets":-1, "data":"index", "render": function(data,type,row,full,meta)
-                {
-                    return '<button type="button" class="show-modal btn btn-success btn-xs" data-toggle="modal" data-target="#modal" data-keyboard="true" data-id="' + row.id +'" data-nam="' + row.attributes.name +'" data-title="' + row +'"><i class="fa fa-eye"></i></button>'+
-                        '<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#EditEmailModal" data-keyboard="true" data-id="' + row.id +'"><i class="fa fa-edit"></i></button>'
-                        + ' <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#DeleteEmailModal" data-keyboard="true" data-id="' + row.id +'"><i class="fa fa-times"></i></button>'
-                }}
-        ],
 
     });
 

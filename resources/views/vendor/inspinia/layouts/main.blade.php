@@ -29,16 +29,17 @@
 
 <body class="mini-navbar pace-done  " tcap-name="mainman">
 
-  <div id="wrapper">
-    @include('inspinia::layouts.sidebar.main')
-    @include('inspinia::layouts.main-panel.main')
-  </div>
+
 
   @section('scripts')
   <script src="{{ mix('/js/manifest.js') }}" charset="utf-8"></script>
   <script src="{{ mix('/js/vendor.js') }}" charset="utf-8"></script>
 	<script src="{{ mix('/js/inspinia.js') }}" charset="utf-8"></script>
 	@show
+  <div id="wrapper">
+      @include('inspinia::layouts.sidebar.main')
+      @include('inspinia::layouts.main-panel.main')
+  </div>
 	@stack('body')
 
 

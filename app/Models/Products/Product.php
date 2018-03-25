@@ -78,4 +78,9 @@ class Product extends Model
 
 
     }
+
+    public function suppliers()
+    {
+        return $this->belongsToMany('App\Models\Suppliers\Supplier')->withTimestamps()->withPivot('created_by', 'updated_by','deleted_by');
+    }
 }

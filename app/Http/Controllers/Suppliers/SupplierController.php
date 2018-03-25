@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Suppliers;
 
 use App\Http\Resources\Suppliers;
+use App\Models\Products\Category;
+use App\Models\Products\Product;
 use App\Models\Suppliers\Supplier;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,10 +28,16 @@ class SupplierController extends Controller
 
         $indexColumns = $produc->indexColumns();
         $indexData = json_encode($produc->indexData());
+        $category = Category::get()->pluck('sc','name')->toArray();
+        $sproducts = Product::with(['brand:id,brand','subCategory:id,name,category_id','subCategory.category:id,name'])->orderBy('id')->get(['id','name','sub_category_id','model','brand_id']);
+        //$sproducts = Product::get(['id','sub_category_id as text]')->toJson();
+
+     //   return \json_encode($roles);
 
 
 
-        return view('suppliers.index', ['indexColumns' => $indexColumns
+        return view('suppliers.index', ['indexColumns' => $indexColumns,'category_id' => $category,
+            'sproducts'=>$sproducts
         ]);
 
 
@@ -183,6 +191,13 @@ class SupplierController extends Controller
 
             try {
                 $post->contacts()->delete();
+               // return \json_encode($request->input('contacts'));
+                foreach ($request->input('contacts') as $k)
+                {
+                    if($k['name'] && $k['phone'])
+                        $post->contacts()->create($k);
+
+                }
                 $post->save();
 
             } catch (\Exception $e) { // I don't remember what exception it is specifically
@@ -258,5 +273,22 @@ class SupplierController extends Controller
 
         return view('suppliers.suppliershow', ['products' => $product
         ]);
+    }
+
+    public function apisyncProducts($id,Request $request)
+    {
+        $data = Input::get('products');
+        Supplier::findOrFail($id)->products()->sync($data);
+       // $sproducts = Supplier::find($id)->products()->with(['brand:id,brand','subCategory:id,name,category_id','subCategory.category:id,name'])->orderBy('id')->get(['id','name','sub_category_id','model','brand_id']);
+
+    return $data;
+    }
+
+    public function apiListProducts(Request $request)
+    {
+        $id = Input::get('id');
+         $sproducts = Supplier::find($id)->products()->with(['brand:id,brand','subCategory:id,name,category_id','subCategory.category:id,name'])->orderBy('id')->get(['id','name','sub_category_id','model','brand_id']);
+
+        return $sproducts;
     }
 }
